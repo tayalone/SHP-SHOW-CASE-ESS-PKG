@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/gofiber/fiber/v2"
-	routers "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers"
+	routers "github.com/tayalone/SHP-SHOW-CASE-ESS-PKG/routers"
 )
 
 /*MyFiberContext is Overide fiber contexts*/

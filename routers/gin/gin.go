@@ -13,8 +13,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	router "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers"
-	routers "github.com/tayalone/SHP-SHOW-CASE-BOOK-SRV/routers"
+	routers "github.com/tayalone/SHP-SHOW-CASE-ESS-PKG/routers"
 )
 
 /*MyGinContext is Overide gin contexts*/
@@ -117,14 +116,14 @@ func (r *MyGinRouter) Start() {
 }
 
 // GET Hadeler HTTP gin
-func (r *MyGinRouter) GET(path string, handlers ...func(router.Context)) {
+func (r *MyGinRouter) GET(path string, handlers ...func(routers.Context)) {
 	ginHandlers := handlerConvertor(handlers)
 
 	r.Engine.GET(path, ginHandlers...)
 }
 
 /*Group  Routing*/
-func (r *MyGinRouter) Group(path string, handlers ...func(router.Context)) router.RouteGouping {
+func (r *MyGinRouter) Group(path string, handlers ...func(routers.Context)) routers.RouteGouping {
 	ginHandlers := handlerConvertor(handlers)
 	return MyGinRouterGroup{RouterGroup: r.Engine.Group(path, ginHandlers...)}
 }
@@ -135,7 +134,7 @@ type MyGinRouterGroup struct {
 }
 
 /*GET .... */
-func (r MyGinRouterGroup) GET(path string, handlers ...func(router.Context)) {
+func (r MyGinRouterGroup) GET(path string, handlers ...func(routers.Context)) {
 	ginHandlers := handlerConvertor(handlers)
 	r.RouterGroup.GET(path, ginHandlers...)
 }
