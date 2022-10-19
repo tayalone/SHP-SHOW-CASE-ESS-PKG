@@ -16,5 +16,4 @@
 
 tmp
 
-playground/*
-!playground/.gitkeep
+main.go

@@ -7,8 +7,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/suite"
-	routers "github.com/tayalone/SHP-SHOW-CASE-ESS-PKG/routers"
-	RouteInitor "github.com/tayalone/SHP-SHOW-CASE-ESS-PKG/routers/initor"
+	router "github.com/tayalone/SHP-SHOW-CASE-ESS-PKG/router"
+	RouteInitor "github.com/tayalone/SHP-SHOW-CASE-ESS-PKG/router/initor"
 )
 
 func initRouter() {}
@@ -16,22 +16,22 @@ func initRouter() {}
 /*TestSuite is a test suit for Repo*/
 type TestSuite struct {
 	suite.Suite
-	router routers.Route
+	router router.Route
 }
 
-func iSayPing(c routers.Context) {
+func iSayPing(c router.Context) {
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "pong",
 	})
 }
 
-func iPassFromNext(c routers.Context) {
+func iPassFromNext(c router.Context) {
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "next is working good!!",
 	})
 }
 
-func myCustomMdw(c routers.Context) {
+func myCustomMdw(c router.Context) {
 	c.Next()
 }
 
@@ -39,36 +39,36 @@ func myCustomMdw(c routers.Context) {
 func (suite *TestSuite) SetupSuite() {
 	// suite.Router = router.SetUpRouter()
 
-	myRouter := RouteInitor.Init("GIN", routers.Config{Port: 3000})
+	myRouter := RouteInitor.Init("GIN", router.Config{Port: 3000})
 
-	myRouter.GET("/test-get", func(c routers.Context) {
+	myRouter.GET("/test-get", func(c router.Context) {
 		c.JSON(http.StatusOK, map[string]interface{}{
 			"message": "Test Route 'GET' OK!!",
 		})
 	})
 
 	v1 := myRouter.Group("/v1")
-	v1.GET("/test-group-get", func(c routers.Context) {
+	v1.GET("/test-group-get", func(c router.Context) {
 		c.JSON(http.StatusOK, map[string]interface{}{
 			"message": "Test  Route Grouping 'GET' OK!!",
 		})
 	})
 
-	myRouter.GET("/test-ctx-json", func(c routers.Context) {
+	myRouter.GET("/test-ctx-json", func(c router.Context) {
 		c.JSON(http.StatusOK, map[string]interface{}{
 			"message": "Test CTX 'JSON' OK!!",
 		})
 	})
 
-	myRouter.GET("/test-ctx-next", func(c routers.Context) {
+	myRouter.GET("/test-ctx-next", func(c router.Context) {
 		c.Next()
-	}, func(c routers.Context) {
+	}, func(c router.Context) {
 		c.JSON(http.StatusOK, map[string]interface{}{
 			"message": "Test CTX 'Next' OK!!",
 		})
 	})
 
-	myRouter.GET("/test-ctx-binduri/:id", func(c routers.Context) {
+	myRouter.GET("/test-ctx-binduri/:id", func(c router.Context) {
 		type getIDUri struct {
 			ID uint `uri:"id" binding:"required"`
 		}
@@ -142,7 +142,7 @@ func (suite *TestSuite) TestRouteCTXJson() {
 	suite.router.ServeHTTP(w, req)
 
 	wantMap := map[string]interface{}{
-		"message": "Test CTX 'Next' OK!!",
+		"message": "Test CTX 'JSON' OK!!",
 	}
 	want, _ := json.Marshal(wantMap)
 
