@@ -1,11 +1,14 @@
 package gin
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
 	"net/http"
+	"net/http/httptest"
 	"os"
 	"os/signal"
 	"syscall"
@@ -141,4 +144,16 @@ func (r MyGinRouterGroup) GET(path string, handlers ...func(router.Context)) {
 
 func (r *MyGinRouter) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	r.Engine.ServeHTTP(w, req)
+}
+
+/*Testing make Gin Testing Call API and return result and statuscode*/
+func (r *MyGinRouter) Testing(method string, path string, body map[string]interface{}) (int, string) {
+	b := new(bytes.Buffer)
+	json.NewEncoder(b).Encode(body)
+
+	req, _ := http.NewRequest(method, path, b)
+	w := httptest.NewRecorder()
+	r.Engine.ServeHTTP(w, req)
+
+	return w.Code, w.Body.String()
 }

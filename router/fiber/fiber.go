@@ -1,7 +1,10 @@
 package fiber
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
@@ -88,4 +91,18 @@ func (r MyFiberRouterGroup) GET(path string, handlers ...func(router.Context)) {
 
 func (r *MyFiberRouter) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	/* For fiber Do nothing */
+}
+
+/*Testing make Fiber Testing Call API and return result and statuscode*/
+func (r *MyFiberRouter) Testing(method string, path string, body map[string]interface{}) (int, string) {
+	b := new(bytes.Buffer)
+	json.NewEncoder(b).Encode(body)
+
+	req, _ := http.NewRequest(method, path, b)
+	resp, _ := r.App.Test(req, 1)
+
+	ac, _ := ioutil.ReadAll(resp.Body)
+	actual := string(ac)
+
+	return resp.StatusCode, actual
 }

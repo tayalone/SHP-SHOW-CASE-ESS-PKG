@@ -36,7 +36,7 @@ func myCustomMdw(c router.Context) {
 func (suite *TestSuite) SetupSuite() {
 	// suite.Router = router.SetUpRouter()
 
-	myRouter := RouteInitor.Init("GIN", router.Config{Port: 3000})
+	myRouter := RouteInitor.Init("FIBER", router.Config{Port: 3000})
 
 	myRouter.GET("/test-get", func(c router.Context) {
 		c.JSON(http.StatusOK, map[string]interface{}{
@@ -155,6 +155,6 @@ func (suite *TestSuite) TestRouteCTXBindURI() {
 }
 
 /*TestGinRouteSuite is trigger run it test*/
-func TestGinRouteSuite(t *testing.T) {
+func TestFiberRouteSuite(t *testing.T) {
 	suite.Run(t, new(TestSuite))
 }
