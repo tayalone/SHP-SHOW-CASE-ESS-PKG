@@ -1,0 +1,7 @@
+{
+    "go.lintOnSave": "workspace",
+    "go.lintTool": "golint",
+    "go.buildFlags": [
+        "-tags=unit,integration,geo_it"
+    ],
+}
