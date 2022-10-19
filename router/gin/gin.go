@@ -13,7 +13,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	routers "github.com/tayalone/SHP-SHOW-CASE-ESS-PKG/routers"
+	router "github.com/tayalone/SHP-SHOW-CASE-ESS-PKG/router"
 )
 
 /*MyGinContext is Overide gin contexts*/
@@ -43,7 +43,7 @@ func NewMyGinContext(c *gin.Context) *MyGinContext {
 }
 
 /*NewGinHandler covert  MyGinContext -> Gin Context */
-func NewGinHandler(handler func(c routers.Context)) gin.HandlerFunc {
+func NewGinHandler(handler func(c router.Context)) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		handler(NewMyGinContext(c))
 	}
@@ -52,11 +52,11 @@ func NewGinHandler(handler func(c routers.Context)) gin.HandlerFunc {
 // MyGinRouter is Overided Gin Engine
 type MyGinRouter struct {
 	*gin.Engine
-	conf routers.Config
+	conf router.Config
 }
 
 // NewMyRouter retun my engin
-func NewMyRouter(conf routers.Config) *MyGinRouter {
+func NewMyRouter(conf router.Config) *MyGinRouter {
 	r := gin.Default()
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{
@@ -68,7 +68,7 @@ func NewMyRouter(conf routers.Config) *MyGinRouter {
 	return &MyGinRouter{r, conf}
 }
 
-func handlerConvertor(h []func(routers.Context)) []gin.HandlerFunc {
+func handlerConvertor(h []func(router.Context)) []gin.HandlerFunc {
 	ginHandlers := []gin.HandlerFunc{}
 	for _, handler := range h {
 		ginHandlers = append(ginHandlers, NewGinHandler(handler))
@@ -116,14 +116,14 @@ func (r *MyGinRouter) Start() {
 }
 
 // GET Hadeler HTTP gin
-func (r *MyGinRouter) GET(path string, handlers ...func(routers.Context)) {
+func (r *MyGinRouter) GET(path string, handlers ...func(router.Context)) {
 	ginHandlers := handlerConvertor(handlers)
 
 	r.Engine.GET(path, ginHandlers...)
 }
 
 /*Group  Routing*/
-func (r *MyGinRouter) Group(path string, handlers ...func(routers.Context)) routers.RouteGouping {
+func (r *MyGinRouter) Group(path string, handlers ...func(router.Context)) router.RouteGouping {
 	ginHandlers := handlerConvertor(handlers)
 	return MyGinRouterGroup{RouterGroup: r.Engine.Group(path, ginHandlers...)}
 }
@@ -134,11 +134,11 @@ type MyGinRouterGroup struct {
 }
 
 /*GET .... */
-func (r MyGinRouterGroup) GET(path string, handlers ...func(routers.Context)) {
+func (r MyGinRouterGroup) GET(path string, handlers ...func(router.Context)) {
 	ginHandlers := handlerConvertor(handlers)
 	r.RouterGroup.GET(path, ginHandlers...)
 }
 
 func (r *MyGinRouter) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-	r.ServeHTTP(w, req)
+	r.Engine.ServeHTTP(w, req)
 }

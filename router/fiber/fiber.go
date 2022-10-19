@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
-	routers "github.com/tayalone/SHP-SHOW-CASE-ESS-PKG/routers"
+	router "github.com/tayalone/SHP-SHOW-CASE-ESS-PKG/router"
 )
 
 /*MyFiberContext is Overide fiber contexts*/
@@ -38,16 +38,16 @@ func NewMyFiberContext(ctx *fiber.Ctx) *MyFiberContext {
 /*MyFiberRouter defibne Fiber */
 type MyFiberRouter struct {
 	*fiber.App
-	conf routers.Config
+	conf router.Config
 }
 
 /*NewFiberRouter defibne Fiber Router */
-func NewFiberRouter(conf routers.Config) *MyFiberRouter {
+func NewFiberRouter(conf router.Config) *MyFiberRouter {
 	r := fiber.New()
 	return &MyFiberRouter{r, conf}
 }
 
-func handlerConvertor(h []func(routers.Context)) []func(*fiber.Ctx) error {
+func handlerConvertor(h []func(router.Context)) []func(*fiber.Ctx) error {
 	fiberHandlers := []func(*fiber.Ctx) error{}
 	for _, handler := range h {
 		fiberHandlers = append(fiberHandlers, func(c *fiber.Ctx) error {
@@ -64,13 +64,13 @@ func (r *MyFiberRouter) Start() {
 }
 
 /*GET Hadeler HTTP gin */
-func (r *MyFiberRouter) GET(path string, handlers ...func(routers.Context)) {
+func (r *MyFiberRouter) GET(path string, handlers ...func(router.Context)) {
 	fiberHandlers := handlerConvertor(handlers)
 	r.App.Get(path, fiberHandlers...)
 }
 
 /*Group is Group Routing For Fiber */
-func (r *MyFiberRouter) Group(path string, handlers ...func(routers.Context)) routers.RouteGouping {
+func (r *MyFiberRouter) Group(path string, handlers ...func(router.Context)) router.RouteGouping {
 	fiberHandlers := handlerConvertor(handlers)
 	return MyFiberRouterGroup{Router: r.App.Group(path, fiberHandlers...)}
 }
@@ -81,11 +81,11 @@ type MyFiberRouterGroup struct {
 }
 
 /*GET Hadeler HTTP gin */
-func (r MyFiberRouterGroup) GET(path string, handlers ...func(routers.Context)) {
+func (r MyFiberRouterGroup) GET(path string, handlers ...func(router.Context)) {
 	fiberHandlers := handlerConvertor(handlers)
 	r.Router.Get(path, fiberHandlers...)
 }
 
 func (r *MyFiberRouter) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-	/*do not thing*/
+	/* For fiber Do nothing */
 }
