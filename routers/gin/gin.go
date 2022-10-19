@@ -138,3 +138,7 @@ func (r MyGinRouterGroup) GET(path string, handlers ...func(routers.Context)) {
 	ginHandlers := handlerConvertor(handlers)
 	r.RouterGroup.GET(path, ginHandlers...)
 }
+
+func (r *MyGinRouter) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	r.ServeHTTP(w, req)
+}

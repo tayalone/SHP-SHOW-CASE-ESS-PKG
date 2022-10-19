@@ -1,5 +1,7 @@
 package routers
 
+import "net/http"
+
 /*Context is Behavior of Route Context In Application*/
 type Context interface {
 	Next()
@@ -12,6 +14,7 @@ type Route interface {
 	Start()
 	GET(path string, handlers ...func(Context))
 	Group(path string, handlers ...func(Context)) RouteGouping
+	ServeHTTP(w http.ResponseWriter, req *http.Request)
 }
 
 /*RouteGouping is Behavior of Route Method In Application*/

@@ -2,6 +2,7 @@ package fiber
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/gofiber/fiber/v2"
 	routers "github.com/tayalone/SHP-SHOW-CASE-ESS-PKG/routers"
@@ -83,4 +84,8 @@ type MyFiberRouterGroup struct {
 func (r MyFiberRouterGroup) GET(path string, handlers ...func(routers.Context)) {
 	fiberHandlers := handlerConvertor(handlers)
 	r.Router.Get(path, fiberHandlers...)
+}
+
+func (r *MyFiberRouter) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	/*do not thing*/
 }
