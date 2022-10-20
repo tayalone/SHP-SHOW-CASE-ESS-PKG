@@ -33,7 +33,7 @@ func (suite *GetTestSuite) BeforeTest(suiteName, testName string) {
 	suite.router = mock.MakeRoute(routeType)
 }
 
-func (suite *GetTestSuite) testGet() {
+func (suite *GetTestSuite) runTest() {
 	statusCode, actual := suite.router.Testing(http.MethodGet, "/test-get", nil)
 
 	wantMap := map[string]interface{}{
@@ -47,11 +47,11 @@ func (suite *GetTestSuite) testGet() {
 }
 
 func (suite *GetTestSuite) TestGin() {
-	suite.testGet()
+	suite.runTest()
 }
 
 func (suite *GetTestSuite) TestFiber() {
-	suite.testGet()
+	suite.runTest()
 }
 
 /*TestGinRouteSuite is trigger run it test*/

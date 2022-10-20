@@ -1,4 +1,4 @@
-package method
+package context
 
 import (
 	"encoding/json"
@@ -10,18 +10,18 @@ import (
 	"github.com/tayalone/SHP-SHOW-CASE-ESS-PKG/router"
 )
 
-type GroupGetTestSuite struct {
+type CTXJsonTestSuite struct {
 	suite.Suite
 	router router.Route
 }
 
 /*SetupSuite init setup for Router*/
-func (suite *GroupGetTestSuite) SetupSuite() {
+func (suite *CTXJsonTestSuite) SetupSuite() {
 	/* Do Not Thing */
 }
 
 // BeforeTest run before each test
-func (suite *GroupGetTestSuite) BeforeTest(suiteName, testName string) {
+func (suite *CTXJsonTestSuite) BeforeTest(suiteName, testName string) {
 	var routeType string
 
 	switch testName {
@@ -33,11 +33,11 @@ func (suite *GroupGetTestSuite) BeforeTest(suiteName, testName string) {
 	suite.router = mock.MakeRoute(routeType)
 }
 
-func (suite *GroupGetTestSuite) runTest() {
-	statusCode, actual := suite.router.Testing(http.MethodGet, "/v1/test-group-get", nil)
+func (suite *CTXJsonTestSuite) runTest() {
+	statusCode, actual := suite.router.Testing(http.MethodGet, "/test-ctx-json", nil)
 
 	wantMap := map[string]interface{}{
-		"message": "Test  Route Grouping 'GET' OK!!",
+		"message": "Test CTX 'JSON' OK!!",
 	}
 	want, _ := json.Marshal(wantMap)
 
@@ -45,15 +45,15 @@ func (suite *GroupGetTestSuite) runTest() {
 	suite.JSONEq(string(want), actual)
 }
 
-func (suite *GroupGetTestSuite) TestGin() {
+func (suite *CTXJsonTestSuite) TestGin() {
 	suite.runTest()
 }
 
-func (suite *GroupGetTestSuite) TestFiber() {
+func (suite *CTXJsonTestSuite) TestFiber() {
 	suite.runTest()
 }
 
-/*TestGinRouteSuite is trigger run it test*/
-func TestGroupRouteGetSuite(t *testing.T) {
-	suite.Run(t, new(GroupGetTestSuite))
+/*TestCTXNextSuite is trigger run it test*/
+func TestCTXJsonSuite(t *testing.T) {
+	suite.Run(t, new(CTXJsonTestSuite))
 }
