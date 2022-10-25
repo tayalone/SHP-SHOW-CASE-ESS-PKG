@@ -123,12 +123,17 @@ func (r *MyFiberRouter) TestServeHTTP(method string, path string, body map[strin
 	b := new(bytes.Buffer)
 	json.NewEncoder(b).Encode(body)
 
+	fmt.Println("Fiber TestServeHTTP method", method)
+	fmt.Println("Fiber TestServeHTTP path", path)
+	fmt.Println("Fiber TestServeHTTP body", body)
+
 	req, _ := http.NewRequest(method, path, b)
 	w := httptest.NewRecorder()
 
 	fiberHTTP := adaptor.FiberApp(r.App)
 
 	fiberHTTP.ServeHTTP(w, req)
+	fmt.Println(" w.Code", w.Body.String())
 
 	return w.Code, w.Body.String()
 }
