@@ -98,6 +98,10 @@ func (r *MyFiberRouter) Testing(method string, path string, body map[string]inte
 	b := new(bytes.Buffer)
 	json.NewEncoder(b).Encode(body)
 
+	fmt.Println("body", body)
+	fmt.Println("method", method)
+	fmt.Println("path", path)
+
 	req, _ := http.NewRequest(method, path, b)
 	resp, _ := r.App.Test(req, 1)
 
