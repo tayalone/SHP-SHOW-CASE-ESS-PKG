@@ -157,3 +157,8 @@ func (r *MyGinRouter) Testing(method string, path string, body map[string]interf
 
 	return w.Code, w.Body.String()
 }
+
+/*TestServeHTTP do joblike Testing*/
+func (r *MyGinRouter) TestServeHTTP(method string, path string, body map[string]interface{}) (int, string) {
+	return r.Testing(method, path, body)
+}

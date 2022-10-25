@@ -34,7 +34,7 @@ func (suite *GetTestSuite) BeforeTest(suiteName, testName string) {
 }
 
 func (suite *GetTestSuite) runTest() {
-	statusCode, actual := suite.router.Testing(http.MethodGet, "/test-get", nil)
+	statusCode, actual := suite.router.TestServeHTTP(http.MethodGet, "/test-get", nil)
 
 	wantMap := map[string]interface{}{
 		"message": "Test Route 'GET' OK!!",

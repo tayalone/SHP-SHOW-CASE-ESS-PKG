@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/http/httptest"
 
+	"github.com/gofiber/adaptor/v2"
 	"github.com/gofiber/fiber/v2"
 	router "github.com/tayalone/SHP-SHOW-CASE-ESS-PKG/router"
 )
@@ -98,19 +100,35 @@ func (r *MyFiberRouter) Testing(method string, path string, body map[string]inte
 	b := new(bytes.Buffer)
 	json.NewEncoder(b).Encode(body)
 
-	fmt.Println("body", body)
-	fmt.Println("method", method)
-	fmt.Println("path", path)
+	// fmt.Println("body", body)
+	// fmt.Println("method", method)
+	// fmt.Println("path", path)
 
 	req, _ := http.NewRequest(method, path, b)
-	fmt.Println("req", req)
+	// fmt.Println("req", req)
 	resp, _ := r.App.Test(req, 1)
-	fmt.Println("resp", resp)
+	// fmt.Println("resp", resp)
 
 	ac, _ := ioutil.ReadAll(resp.Body)
-	fmt.Println("ac", ac)
+	// fmt.Println("ac", ac)
 	actual := string(ac)
-	fmt.Println("actual", actual)
+	// fmt.Println("actual", actual)
 
 	return resp.StatusCode, actual
+}
+
+/*TestServeHTTP Convert  Fiber to net/http and Server http and return result and statuscode*/
+func (r *MyFiberRouter) TestServeHTTP(method string, path string, body map[string]interface{}) (int, string) {
+
+	b := new(bytes.Buffer)
+	json.NewEncoder(b).Encode(body)
+
+	req, _ := http.NewRequest(method, path, b)
+	w := httptest.NewRecorder()
+
+	fiberHTTP := adaptor.FiberApp(r.App)
+
+	fiberHTTP.ServeHTTP(w, req)
+
+	return w.Code, w.Body.String()
 }
