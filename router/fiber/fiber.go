@@ -103,10 +103,14 @@ func (r *MyFiberRouter) Testing(method string, path string, body map[string]inte
 	fmt.Println("path", path)
 
 	req, _ := http.NewRequest(method, path, b)
+	fmt.Println("req", req)
 	resp, _ := r.App.Test(req, 1)
+	fmt.Println("resp", resp)
 
 	ac, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println("ac", ac)
 	actual := string(ac)
+	fmt.Println("actual", actual)
 
 	return resp.StatusCode, actual
 }
