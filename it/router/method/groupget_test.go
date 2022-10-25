@@ -2,6 +2,7 @@ package method
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"testing"
 
@@ -24,8 +25,10 @@ func (suite *GroupGetTestSuite) SetupSuite() {
 func (suite *GroupGetTestSuite) BeforeTest(suiteName, testName string) {
 	var routeType string
 
+	fmt.Println("BeforeTest", testName)
+
 	switch testName {
-	case "Fiber":
+	case "TestFiber":
 		routeType = "FIBER"
 	default:
 		routeType = "GIN"

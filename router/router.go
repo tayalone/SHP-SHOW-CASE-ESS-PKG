@@ -16,7 +16,6 @@ type Route interface {
 	Group(path string, handlers ...func(Context)) RouteGouping
 	ServeHTTP(w http.ResponseWriter, req *http.Request)
 	Testing(method string, path string, body map[string]interface{}) (int, string)
-	TestServeHTTP(method string, path string, body map[string]interface{}) (int, string)
 }
 
 /*RouteGouping is Behavior of Route Method In Application*/

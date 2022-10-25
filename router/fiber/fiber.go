@@ -6,9 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"net/http/httptest"
 
-	"github.com/gofiber/adaptor/v2"
 	"github.com/gofiber/fiber/v2"
 	router "github.com/tayalone/SHP-SHOW-CASE-ESS-PKG/router"
 )
@@ -106,7 +104,7 @@ func (r *MyFiberRouter) Testing(method string, path string, body map[string]inte
 
 	req, _ := http.NewRequest(method, path, b)
 	// fmt.Println("req", req)
-	resp, _ := r.App.Test(req, 1)
+	resp, _ := r.App.Test(req, -1)
 	// fmt.Println("resp", resp)
 
 	ac, _ := ioutil.ReadAll(resp.Body)
@@ -115,25 +113,4 @@ func (r *MyFiberRouter) Testing(method string, path string, body map[string]inte
 	// fmt.Println("actual", actual)
 
 	return resp.StatusCode, actual
-}
-
-/*TestServeHTTP Convert  Fiber to net/http and Server http and return result and statuscode*/
-func (r *MyFiberRouter) TestServeHTTP(method string, path string, body map[string]interface{}) (int, string) {
-
-	b := new(bytes.Buffer)
-	json.NewEncoder(b).Encode(body)
-
-	fmt.Println("Fiber TestServeHTTP method", method)
-	fmt.Println("Fiber TestServeHTTP path", path)
-	fmt.Println("Fiber TestServeHTTP body", body)
-
-	req, _ := http.NewRequest(method, path, b)
-	w := httptest.NewRecorder()
-
-	fiberHTTP := adaptor.FiberApp(r.App)
-
-	fiberHTTP.ServeHTTP(w, req)
-	fmt.Println(" w.Code", w.Body.String())
-
-	return w.Code, w.Body.String()
 }

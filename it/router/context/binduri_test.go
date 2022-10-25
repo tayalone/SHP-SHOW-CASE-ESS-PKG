@@ -25,7 +25,7 @@ func (suite *CTXBindURITestSuite) BeforeTest(suiteName, testName string) {
 	var routeType string
 
 	switch testName {
-	case "Fiber":
+	case "TestFiber":
 		routeType = "FIBER"
 	default:
 		routeType = "GIN"

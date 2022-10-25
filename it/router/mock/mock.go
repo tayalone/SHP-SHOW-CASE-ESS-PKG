@@ -1,6 +1,7 @@
 package mock
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/tayalone/SHP-SHOW-CASE-ESS-PKG/router"
@@ -9,7 +10,8 @@ import (
 
 // MakeRoute create router for integration test
 func MakeRoute(routeType string) router.Route {
-	myRouter := RouteInitor.Init("GIN", router.Config{Port: 3000})
+	fmt.Println("routeType", routeType)
+	myRouter := RouteInitor.Init(routeType, router.Config{Port: 3000})
 
 	myRouter.GET("/test-get", func(c router.Context) {
 		c.JSON(http.StatusOK, map[string]interface{}{
